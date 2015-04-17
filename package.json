@@ -1,5 +1,5 @@
 {
-  "name": "react-doc-title",
+  "name": "react-doc-meta",
   "version": "0.1.0",
   "description": "Render meta tags on the server & client for ReactJS",
   "main": "index.js",
