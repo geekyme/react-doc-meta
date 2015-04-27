@@ -19,12 +19,12 @@ var DocumentMeta = createSideEffect(function handleChange(propsList) {
     // this chunk here gets rid of the doc-meta nodes
     let nodes = document.querySelectorAll(`meta[data-doc-meta="true"]`);
 
-    _.forEach(nodes, (node) => {
+    Array.prototype.slice.call(nodes).forEach((node) => {
       node.parentNode.removeChild(node);
     });
 
     // then reinsert new ones
-    _.forEach(tags, (tag) => {
+    Array.prototype.slice.call(tags).forEach((tag) => {
       // tag can contain many property.
       let newNode = document.createElement("meta")
 
