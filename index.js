@@ -12,40 +12,41 @@ function getMetaFromPropsList(propsList) {
   }
 }
 
-var DocumentMeta = createSideEffect(function handleChange(propsList) {
-  var tags = getMetaFromPropsList(propsList);
-
-  if (!tags || tags.length === 0) {
-    return undefined;
-  }if (typeof document !== 'undefined') {
-    // this chunk here gets rid of the doc-meta nodes
+function removeMetaNodes() {
+  if (typeof document !== 'undefined') {
     var nodes = document.querySelectorAll('meta[data-doc-meta="true"]');
-
     Array.prototype.slice.call(nodes).forEach(function (node) {
       node.parentNode.removeChild(node);
     });
-
-    // then reinsert new ones
-    Array.prototype.slice.call(tags).forEach(function (tag) {
-      // tag can contain many property.
-      var newNode = document.createElement('meta');
-
-      for (var property in tag) {
-        if (tag.hasOwnProperty(property)) {
-          // add the properties
-          newNode.setAttribute(property, tag[property]);
-        }
-      }
-
-      // add the lib-signature
-      newNode.setAttribute('data-doc-meta', 'true');
-
-      // add the node to head
-      document.getElementsByTagName('head')[0].appendChild(newNode);
-    });
-  } else {
-    _serverMeta = _serverMeta.concat(tags);
   }
+}
+
+function insertMetaNode(tag) {
+  var newNode = document.createElement('meta');
+  for (var property in tag) {
+    if (tag.hasOwnProperty(property)) {
+      newNode.setAttribute(property, tag[property]);
+    }
+  }
+  newNode.setAttribute('data-doc-meta', 'true');
+  document.getElementsByTagName('head')[0].appendChild(newNode);
+}
+
+function insertMetaNodes(tags) {
+  if (typeof document !== 'undefined') {
+    Array.prototype.slice.call(tags).forEach(function (tag) {
+      insertMetaNode(tag);
+    });
+  }
+}
+
+removeMetaNodes(); // required unless html5mode
+
+var DocumentMeta = createSideEffect(function handleChange(propsList) {
+  _serverMeta = getMetaFromPropsList(propsList) || [];
+
+  removeMetaNodes();
+  insertMetaNodes(_serverMeta);
 }, {
   displayName: 'DocumentMeta',
 
@@ -67,4 +68,3 @@ var DocumentMeta = createSideEffect(function handleChange(propsList) {
 });
 
 module.exports = DocumentMeta;
-
