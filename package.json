@@ -1,6 +1,6 @@
 {
   "name": "react-doc-meta",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Render meta tags on the server & client for ReactJS",
   "main": "index.js",
   "peerDependencies": {

@@ -197,3 +197,5 @@ Contributions welcomed! Raise issues / submit pull requests thank you!
 * 0.1.0 Adapted solution for react-document-title for meta tags
 
 * 0.1.1 Removed undeclared underscore dependency. Using native array prototype functions instead.
+
+* 0.2.0 Merged a critical fix that causes memory leaks on _serverMeta
