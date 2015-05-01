@@ -186,7 +186,9 @@ Because this component keeps track of mounted instances, **you have to make sure
 
 ## TODO
 
-TEST!
+1. TEST!
+
+2. Better diffing for meta tag changes on the client side
 
 ## Contributing
 
