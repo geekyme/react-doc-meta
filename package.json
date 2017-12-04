@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "react-side-effect": "~0.3.0",
-    "prop-types": "^15.6.0",
+    "prop-types": "^15.6.0"
   },
   "maintainers": [
     {
