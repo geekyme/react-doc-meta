@@ -1,7 +1,8 @@
 'use strict';
 
 var React = require('react'),
-    createSideEffect = require('react-side-effect');
+    createSideEffect = require('react-side-effect'),
+    PropTypes = require('prop-types');
 
 var _serverMeta = [];
 
@@ -51,7 +52,7 @@ var DocumentMeta = createSideEffect(function handleChange(propsList) {
   displayName: 'DocumentMeta',
 
   propTypes: {
-    tags: React.PropTypes.array
+    tags: PropTypes.array
   },
 
   statics: {
