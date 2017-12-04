@@ -39,18 +39,20 @@ function removeMetaNodes() {
 }
 
 function insertMetaNode(tag) {
-  var newNode = document.createElement('meta');
-  for (var property in tag) {
-    if (tag.hasOwnProperty(property)) {
-      newNode.setAttribute(property, tag[property]);
+  if (tag){
+    var newNode = document.createElement('meta');
+    for (var property in tag) {
+      if (tag.hasOwnProperty(property)) {
+        newNode.setAttribute(property, tag[property]);
+      }
     }
+    newNode.setAttribute('data-doc-meta', 'true');
+    document.getElementsByTagName('head')[0].appendChild(newNode);
   }
-  newNode.setAttribute('data-doc-meta', 'true');
-  document.getElementsByTagName('head')[0].appendChild(newNode);
 }
 
 function insertMetaNodes(tags) {
-  if (typeof document !== 'undefined') {
+  if (typeof document !== 'undefined' && tags) {
     Array.prototype.slice.call(tags).forEach(function (tag) {
       insertMetaNode(tag);
     });
@@ -69,7 +71,7 @@ function reducePropsToState(propsList) {
 }
 
 function handleStateChangeOnClient(meta) {
-  let _serverMeta = getMetaFromPropsList(meta) || [];
+  let _serverMeta = meta ? getMetaFromPropsList(meta) : [];
   removeMetaNodes();
 
   insertMetaNodes(_serverMeta);
