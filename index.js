@@ -1,10 +1,27 @@
 'use strict';
 
 var React = require('react'),
-    createSideEffect = require('react-side-effect');
+    Component = require('react').Component,
+    withSideEffect = require('react-side-effect'),
+    PropTypes = require('prop-types');
 
-var _serverMeta = [];
+class DocumentMeta extends Component {
+  render() {
+    if (this.props.children) {
+      return Children.only(this.props.children);
+    } else {
+      return null;
+    }
+  }
+}
 
+DocumentMeta.propTypes = {
+  tags: PropTypes.array
+}
+
+/**
+ * TO HANDLE CHANGE
+ */
 function getMetaFromPropsList(propsList) {
   var innermostProps = propsList[propsList.length - 1];
   if (innermostProps) {
@@ -40,31 +57,25 @@ function insertMetaNodes(tags) {
   }
 }
 
-removeMetaNodes(); // required unless html5mode
+/**
+ * FUNCTIONS TO EXPORT
+ */
 
-var DocumentMeta = createSideEffect(function handleChange(propsList) {
-  _serverMeta = getMetaFromPropsList(propsList) || [];
-
-  removeMetaNodes();
-  insertMetaNodes(_serverMeta);
-}, {
-  displayName: 'DocumentMeta',
-
-  propTypes: {
-    tags: React.PropTypes.array
-  },
-
-  statics: {
-    peek: function peek() {
-      return _serverMeta;
-    },
-
-    rewind: function rewind() {
-      var meta = _serverMeta;
-      this.dispose();
-      return meta;
-    }
+function reducePropsToState(propsList) {
+  var innermostProps = propsList[propsList.length - 1];
+  if (innermostProps) {
+    return innermostProps.tags;
   }
-});
+}
 
-module.exports = DocumentMeta;
+function handleStateChangeOnClient(meta) {
+  let _serverMeta = getMetaFromPropsList(meta) || [];
+  removeMetaNodes();
+
+  insertMetaNodes(_serverMeta);
+}
+
+module.exports = withSideEffect(
+  reducePropsToState,
+  handleStateChangeOnClient
+)(DocumentMeta);
